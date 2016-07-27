@@ -72,18 +72,29 @@ const defined = {
 
     init: function (size) {
         if (!this.buffer || this.offset + size + this.buffer.byteLength) {
-            this.buffer = this.read(this.bufferSize);
+            this.buffer = this.read(size > this.bufferSize ? size : this.bufferSize);
             this.offset = 0;
         }
     },
-    
+
     piece: function (encoding, size) {
         this.init(size);
         return this.buffer.slice(this.offset, this.offset += size).toString(encoding);
     },
-    
+
     hex: function (size) {
         return this.piece('hex', size);
+    },
+
+    copy: function (buffer, offset, size) {
+        if (!offset) {
+            offset = 0;
+        }
+        if (!size) {
+            size = buffer.byteLength;
+        }
+        this.init(size);
+        this.buffer.copy(buffer, offset, this.offset, this.offset += size);
     }
 };
 
