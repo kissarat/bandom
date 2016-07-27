@@ -1,0 +1,24 @@
+{
+  "name": "bandom",
+  "version": "1.0.0",
+  "description": "Synchronous generating random numbers and arrays from /dev/random using 16k Buffer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/kissarat/bandom.git"
+  },
+  "keywords": [
+    "random",
+    "buffer",
+    "sync"
+  ],
+  "author": "Taras Labiak <kissarat@gmail.com>",
+  "license": "LGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/kissarat/bandom/issues"
+  },
+  "homepage": "https://github.com/kissarat/bandom#readme"
+}
