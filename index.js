@@ -1,13 +1,22 @@
 "use strict";
 
-// var Buffer = require('buffer').Buffer;
 const fs = require('fs');
 
 const MAX_UINT = 256 * 256 * 256 * 256 - 1;
+const QUARTAL = Number.MAX_SAFE_INTEGER / (1000 * 1000 * 1000);
+const MILLION = 1000 * 1000;
+const BILLION = 1000 * 1000 * 1000;
+
+var index = 0;
 
 const defined = {
     bufferSize: 16 * 1024,
     offset: 0,
+    _start: (function () {
+        var time = process.hrtime();
+        time = Date.now() / 1000 - time[0];
+        return Math.round(time);
+    })(),
 
     read: function (size) {
         var buffer;
@@ -95,6 +104,69 @@ const defined = {
         }
         this.init(size);
         this.buffer.copy(buffer, offset, this.offset, this.offset += size);
+    },
+
+    micro: function (prefix, cut) {
+        if ('number' != typeof cut) {
+            cut = 6;
+        }
+        var now = process.hrtime();
+        now = (this._start + now[0]) * MILLION + now[1] / 1000;
+        now = '0000000000' + Math.round(now).toString(36);
+        now = now.slice(-cut);
+        if (prefix) {
+            now = prefix + now;
+        }
+        return now;
+    },
+
+    nano: function (prefix, cut) {
+        if ('number' != typeof cut) {
+            cut = 9;
+        }
+        var now = process.hrtime();
+        now = ((this._start + now[0]) % QUARTAL) * BILLION + now[1] / 1000;
+        now = '0000000000000' + Math.round(now).toString(36);
+        now = now.slice(-cut);
+        if (prefix) {
+            now = prefix + now;
+        }
+        return now;
+    },
+
+    inc: function (width) {
+        if ('number' !== typeof width) {
+            width = 3;
+        }
+        return (new Array(width).join('0') + ++index).toString(36);
+    },
+
+    lower: function (size) {
+        if ('number' !== typeof size) {
+            size = 6;
+        }
+        return exports.sample('abcdefghijklmnopqrstuvwxyz', size).join('');
+    },
+
+    upper: function (size) {
+        if ('number' !== typeof size) {
+            size = 6;
+        }
+        return exports.sample('ABCDEFGHIJKLMNOPQRSTUVWXYZ', size).join('');
+    },
+
+    letters: function (size) {
+        if ('number' !== typeof size) {
+            size = 4;
+        }
+        return exports.sample('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', size).join('');
+    },
+
+    lettersDigits: function (size) {
+        if ('number' !== typeof size) {
+            size = 4;
+        }
+        return exports.sample('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', size).join('');
     }
 };
 

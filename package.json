@@ -1,6 +1,6 @@
 {
   "name": "bandom",
-  "version": "1.0.1",
+  "version": "1.1",
   "description": "Synchronous generating random numbers and arrays from /dev/random using 16k Buffer",
   "main": "index.js",
   "scripts": {

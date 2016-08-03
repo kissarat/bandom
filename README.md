@@ -55,3 +55,13 @@ Used for random sampling without replacement.
 
 Shuffle the sequence `array` in place
 
+* piece(encoding, size)
+* hex(size)
+* copy(buffer, offset, size)
+* micro(prefix, cut)
+* nano(prefix, cut)
+* inc(width)
+* lower(size)
+* upper(size)
+* letters(size)
+* letterDigits(size)
