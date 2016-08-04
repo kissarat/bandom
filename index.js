@@ -138,7 +138,7 @@ const defined = {
         if ('number' !== typeof width) {
             width = 3;
         }
-        return (new Array(width).join('0') + ++index).toString(36);
+        return (new Array(width).join('0') + ++index).toString(36).slice(-width);
     },
 
     lower: function (size) {
