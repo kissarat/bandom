@@ -4,7 +4,7 @@
   "description": "Synchronous generating random numbers and arrays from /dev/random using 16k Buffer",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
