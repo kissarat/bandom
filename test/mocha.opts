@@ -1,0 +1,4 @@
+--colors
+--recursive
+--bail
+--timeout 1000

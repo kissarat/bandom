@@ -6,6 +6,11 @@ const MAX_UINT = 256 * 256 * 256 * 256 - 1;
 const QUARTAL = Number.MAX_SAFE_INTEGER / (1000 * 1000 * 1000);
 const MILLION = 1000 * 1000;
 const BILLION = 1000 * 1000 * 1000;
+const _lower = 'abcdefghijklmnopqrstuvwxyz'.split('');
+const _upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+const _letters = _lower.concat(_upper);
+const _digits = '0123456789';
+const _letterDigits = _letters.concat(_digits);
 
 var index = 0;
 
@@ -39,8 +44,15 @@ const defined = {
         return exports.uint32BE(MAX_UINT + 1) / MAX_UINT;
     },
 
+    prob: function (population, p) {
+        if ('number' !== typeof p) {
+            p = 0.5;
+        }
+        return population.filter(() => exports.float() < p);
+    },
+
     randint: function (min, max) {
-        return min + exports.uint32BE(max + 1);
+        return min + exports.uint32BE(max - min + 1);
     },
 
     choice: function (array) {
@@ -48,11 +60,7 @@ const defined = {
     },
 
     sample: function (population, k) {
-        var array = [];
-        for (let i = 0; i < k; i++) {
-            array.push(exports.choice(population));
-        }
-        return array;
+        return exports.shuffle(population).slice(0, k);
     },
 
     shuffle: function (array) {
@@ -79,8 +87,8 @@ const defined = {
         return exports.shuffle(array);
     },
 
-    init: function (size) {
-        if (!this.buffer || this.offset + size + this.buffer.byteLength) {
+    init: function (size, create) {
+        if (create || !this.buffer || this.offset + size + this.buffer.byteLength) {
             this.buffer = this.read(size > this.bufferSize ? size : this.bufferSize);
             this.offset = 0;
         }
@@ -145,28 +153,35 @@ const defined = {
         if ('number' !== typeof size) {
             size = 6;
         }
-        return exports.sample('abcdefghijklmnopqrstuvwxyz', size).join('');
+        return exports.sample(_lower, size).join('');
     },
 
     upper: function (size) {
         if ('number' !== typeof size) {
             size = 6;
         }
-        return exports.sample('ABCDEFGHIJKLMNOPQRSTUVWXYZ', size).join('');
+        return exports.sample(_upper, size).join('');
     },
 
     letters: function (size) {
         if ('number' !== typeof size) {
             size = 4;
         }
-        return exports.sample('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', size).join('');
+        return exports.sample(_letters, size).join('');
+    },
+
+    digits: function (size) {
+        if ('number' !== typeof size) {
+            size = 4;
+        }
+        return exports.sample(_digits, size).join('');
     },
 
     lettersDigits: function (size) {
         if ('number' !== typeof size) {
             size = 4;
         }
-        return exports.sample('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', size).join('');
+        return exports.sample(_letterDigits, size).join('');
     }
 };
 
